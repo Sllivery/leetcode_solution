@@ -7,7 +7,8 @@ public class SpiralMatrix {
     public static void main(String[] args) {
         Solution solution = new Solution();
         int matrix[][] = {{1,2,3},{4,5,6},{7,8,9}};
-        List<Integer> result = solution.spiralOrder(matrix);
+        int matrix2[][] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        List<Integer> result = solution.spiralOrderReference(matrix2);
         for (Integer integer : result) {
             System.out.print(integer + " ");
         }
@@ -59,17 +60,38 @@ class Solution {
 
     public List<Integer> spiralOrderReference(int[][] matrix){
          ArrayList<Integer> result = new ArrayList<>();
-//        int up = 0;
-//        int down = 0;
-//        int row = matrix.length - 1;
-//        int col = matrix[0].length - 1;
-//        while (result.size() < matrix.length * matrix[0].length) {
-//            //left to right
-//            for (int colIndex = )
-//            //up to bottom
-//            //right to left
-//            //bottom to up
-//        }
+         int length = matrix.length - 1;
+         int width = matrix[0].length - 1;
+         int up = 0;
+         int left = 0;
+         int right = width;
+         int down = length;
+        while (result.size() < matrix.length * matrix[0].length) {
+            //from left to right
+            for (int i = left; i <= right; i++) {
+                result.add(matrix[up][i]);
+            }
+            //from up to down
+            for (int j = up + 1; j <= down; j++) {
+                result.add(matrix[j][right]);
+            }
+            //from right to left
+            if (up != down) {
+                for (int x = right - 1; x >= left; x--) {
+                    result.add(matrix[down][x]);
+                }
+            }
+            //from down to up
+            if (right != left) {
+                for (int y = down - 1; y >= up + 1; y--) {
+                    result.add(matrix[y][left]);
+                }
+            }
+            up++;
+            left++;
+            right--;
+            down--;
+        }
          return result;
     }
 }
