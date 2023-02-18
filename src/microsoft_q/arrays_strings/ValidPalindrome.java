@@ -14,7 +14,7 @@ public class ValidPalindrome {
             int charsIndex = 0;
             int sIndex = 0;
             for (; sIndex < s.length(); sIndex++) {
-                if (s.charAt(sIndex) >= 'a' && s.charAt(sIndex) <= 'z') {
+                if ((s.charAt(sIndex) >= 'a' && s.charAt(sIndex) <= 'z') || (s.charAt(sIndex) >= '0' && s.charAt(sIndex) <= '9')) {
                     chars[charsIndex] = s.charAt(sIndex);
                     charsIndex++;
                 }
