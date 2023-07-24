@@ -1,46 +1,18 @@
 package utils;
 
-public class TreeNode<T> {
-    private T val;
-    private int height;
-    private TreeNode<T> left;
-    private TreeNode<T> right;
+public class TreeNode {
+    public int val;
 
-    public T getVal() {
-        return val;
-    }
+    public TreeNode left;
+    public TreeNode right;
 
-    public void setVal(T val) {
+    public TreeNode(int val) {
         this.val = val;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public TreeNode<T> getLeft() {
-        return left;
-    }
-
-    public void setLeft(TreeNode<T> left) {
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
         this.left = left;
-    }
-
-    public TreeNode<T> getRight() {
-        return right;
-    }
-
-    public void setRight(TreeNode<T> right) {
         this.right = right;
     }
-
-    public TreeNode(T val) {
-        this.val = val;
-    }
-
-
 }

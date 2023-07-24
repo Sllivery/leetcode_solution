@@ -4,10 +4,10 @@ public class wordSearch79 {
     public static void main(String[] args) {
         char[][] test = {
                 {'A','B','C','E'},
-                {'S','F','C','S'},
+                {'S','F','E','S'},
                 {'A','D','E','E'}
         };
-        String testWord = "SEE";
+        String testWord = "ABCESEEEFS";
         Solution solution = new Solution();
         boolean exist = solution.exist(test, testWord);
         System.out.println(exist);
@@ -19,25 +19,26 @@ public class wordSearch79 {
         public boolean exist(char[][] board, String word) {
             //这题难在，矩阵的搜索空间是巨大的,但是如果用回溯，那是不是可以，很有希望，试一试
             //有个不用HashMap的记录方式，创建一个和board一样的数组record，走过的地方把record对应的索引赋值为1
+            int width = board.length;
+            int length = board[0].length;
+            if (width * length < word.length()) {
+                return false;
+            }
             int[][] start = new int[board.length * board[0].length][];
             int index = 0;
             boolean[] flag = {false};
             for (int i = 0; i < board.length; i++) {
+                if (flag[0]) break;
                 for (int j = 0; j < board[0].length; j++) {
+                    if (flag[0]) break;
                     if (board[i][j] == word.charAt(0)){
-                        start[index] = new int[]{i, j};
-                        index++;
+                        StringBuilder result = new StringBuilder();
+                        int[][] record = new int[board.length][board[0].length];
+                        int[] currentPosition = {i, j};
+                        result.append(board[i][j]);
+                        backtrack(result, board, word, flag, record, currentPosition);
                     }
                 }
-            }
-
-            for (int[] ints : start) {
-                StringBuilder result = new StringBuilder();
-                int[][] record = new int[board.length][board[0].length];
-                int[] currentPosition = {ints[0], ints[1]};
-                result.append(board[ints[0]][ints[1]]);
-                backtrack(result, board, word, flag, record, currentPosition);
-                if (flag[0]) break;
             }
             return flag[0];
         }
@@ -62,6 +63,7 @@ public class wordSearch79 {
                 if (x >= 0 && x < board[0].length && y >= 0 && y < board.length) {
                     builder.append(board[y][x]);
                     backtrack(builder, board, word, flag, record, newPosistion);
+                    record[newPosistion[0]][newPosistion[1]] = 0;
                     builder.deleteCharAt(builder.length() - 1);
                 }
             }
