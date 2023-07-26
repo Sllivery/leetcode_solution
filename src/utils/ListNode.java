@@ -12,7 +12,7 @@ public class ListNode {
 
     public ListNode(int[] array) {
         this(array[0]);
-        ListNode head = this;//issue: 循环当中给next赋值，但是赋完之后next还是null
+        ListNode head = this;
         for (int i = 1; i < array.length; i++) {
             head.next = new ListNode(array[i]);
             head = head.next;

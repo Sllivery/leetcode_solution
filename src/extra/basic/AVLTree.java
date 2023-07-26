@@ -3,10 +3,10 @@ package extra.basic;
 import utils.TreeNode;
 
 public class AVLTree<T> {
-    private class AVLTreeNode<T> extends TreeNode<T> {
+    private class AVLTreeNode extends TreeNode {
         private int balanceFactor;
 
-        public AVLTreeNode(T val) {
+        public AVLTreeNode(int val) {
             super(val);
         }
 
