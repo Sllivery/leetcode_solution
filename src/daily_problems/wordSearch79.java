@@ -3,9 +3,9 @@ package daily_problems;
 public class wordSearch79 {
     public static void main(String[] args) {
         char[][] test = {
-                {'A','B','C','E'},
-                {'S','F','E','S'},
-                {'A','D','E','E'}
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'E', 'S'},
+                {'A', 'D', 'E', 'E'}
         };
         String testWord = "ABCESEEEFS";
         Solution solution = new Solution();
@@ -14,7 +14,7 @@ public class wordSearch79 {
     }
 
     static class Solution {
-        private final int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        private boolean[][] start;
 
         public boolean exist(char[][] board, String word) {
             //这题难在，矩阵的搜索空间是巨大的,但是如果用回溯，那是不是可以，很有希望，试一试
@@ -24,57 +24,40 @@ public class wordSearch79 {
             if (width * length < word.length()) {
                 return false;
             }
-            int[][] start = new int[board.length * board[0].length][];
-            int index = 0;
-            boolean[] flag = {false};
+            start = new boolean[width][length];
             for (int i = 0; i < board.length; i++) {
-                if (flag[0]) break;
                 for (int j = 0; j < board[0].length; j++) {
-                    if (flag[0]) break;
-                    if (board[i][j] == word.charAt(0)){
-                        StringBuilder result = new StringBuilder();
-                        int[][] record = new int[board.length][board[0].length];
-                        int[] currentPosition = {i, j};
-                        result.append(board[i][j]);
-                        backtrack(result, board, word, flag, record, currentPosition);
+                    if (board[i][j] == word.charAt(0) && backtrack(i, j, 0, board, word)) {
+                        return true;
                     }
                 }
             }
-            return flag[0];
+            return false;
         }
 
-        private void backtrack(StringBuilder builder, char[][] board, String word, boolean[] flag, int[][] record, int[] currentPosition) {
-            String current = builder.toString();
-            int currLength = current.length();
-            if (currentPositionisVisited(record, currentPosition) || currentPositionMismatched(word, builder)) {
-                return;//这是失败标志
+        private boolean backtrack(int i, int j, int index, char[][] board, String word) {
+            //find the string
+            if (index == word.length()) {
+                return true;
             }
-            if (currLength == word.length() && current.charAt(currLength - 1) == word.charAt(word.length() - 1)) {
-                record[currentPosition[0]][currentPosition[1]] = 1;
-                flag[0] = true;//这是成功标志
-                return;
+            //out of bound or visited or the current char is inequal to board
+            if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || start[i][j] || word.charAt(index) != board[i][j]) {
+                return false;
             }
-            record[currentPosition[0]][currentPosition[1]] = 1;
             //一个节点拖出四个子节点，因为有四个方向
-            for (int[] direction : directions) {
-                int x = currentPosition[1] + direction[1];
-                int y = currentPosition[0] + direction[0];
-                int[] newPosistion = {y, x};
-                if (x >= 0 && x < board[0].length && y >= 0 && y < board.length) {
-                    builder.append(board[y][x]);
-                    backtrack(builder, board, word, flag, record, newPosistion);
-                    record[newPosistion[0]][newPosistion[1]] = 0;
-                    builder.deleteCharAt(builder.length() - 1);
-                }
+            boolean result = false;
+            start[i][j] = true;
+            if (
+                    backtrack(i + 1, j, index + 1, board, word) ||
+                    backtrack(i - 1, j, index + 1, board, word) ||
+                    backtrack(i, j + 1, index + 1, board, word) ||
+                    backtrack(i, j - 1, index + 1, board, word)
+            ) {
+                result = true;
             }
+            start[i][j] = false;
+            return result;
         }
 
-        private boolean currentPositionisVisited(int[][] record, int[] currentPosition) {
-            return record[currentPosition[0]][currentPosition[1]] == 1;
-        }
-
-        private boolean currentPositionMismatched(String word, StringBuilder builder) {
-            return word.charAt(builder.length() - 1) != builder.charAt(builder.length() - 1);
-        }
     }
 }

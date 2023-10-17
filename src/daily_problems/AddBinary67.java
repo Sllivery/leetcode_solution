@@ -2,9 +2,8 @@ package daily_problems;
 
 public class AddBinary67 {
     public static void main(String[] args) {
-        Solution solution = new Solution();
-        String s = solution.addBinary("111", "111");
-        System.out.println(s);
+        String test = "123";
+        System.out.println(test.substring(1));
     }
 
     static class Solution {
